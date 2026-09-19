@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0b0714">
+    <meta name="description" content="A simple to-do list with progress tracking, filters and undo.">
+    <title>Haru to do list app</title>
+
+    <!-- Fonts (preconnect loads them faster than a CSS @import) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap">
+
+    <!-- Icons: paste your original integrity="..." attribute back in here if you want to keep it -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- defer: runs after the page is parsed, so these can sit in the head -->
+    <script src="rain.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <main class="container">
+        <section class="todo-app" aria-labelledby="app-title">
+
+            <!-- Title + rain switch -->
+            <header class="app-header">
+                <div class="app-heading">
+                    <h1 id="app-title">To-Do List</h1>
+                    <p class="app-date" id="app-date"></p>
+                </div>
+                <button type="button" class="icon-btn rain-toggle" id="rain-toggle"
+                    aria-pressed="true" aria-label="Turn rain off" title="Rain on/off">
+                    <i class="fa-solid fa-cloud-rain" aria-hidden="true"></i>
+                </button>
+            </header>
+
+            <!-- Progress -->
+            <div class="progress-wrap">
+                <div class="progress-info">
+                    <span id="progress-label">No tasks yet</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="progress-track" role="progressbar" aria-label="Tasks completed"
+                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Add a task -->
+            <form class="input-Area" id="task-form">
+                <label for="taskInput" class="sr-only">New task</label>
+                <input type="text" id="taskInput" placeholder="Add a new task" maxlength="120"
+                    autocomplete="off" enterkeyhint="done">
+                <button type="submit" id="add-task-btn" aria-label="Add task">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                </button>
+            </form>
+
+            <!-- Filters -->
+            <div class="filters" role="group" aria-label="Filter tasks">
+                <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All <span class="count">0</span></button>
+                <button type="button" class="filter-btn" data-filter="active" aria-pressed="false">Active <span class="count">0</span></button>
+                <button type="button" class="filter-btn" data-filter="done" aria-pressed="false">Done <span class="count">0</span></button>
+            </div>
+
+            <!-- Tasks -->
+            <div class="todos-container">
+                <ul id="task-list" aria-live="polite"></ul>
+
+                <div class="empty-state" id="empty-state">
+                    <img src="no%20task.jpg" alt="">
+                    <p id="empty-text">Nothing here yet. Add your first task above.</p>
+                </div>
+            </div>
+
+            <footer class="app-footer">
+                <span id="items-left">0 tasks left</span>
+                <button type="button" class="text-btn" id="clear-done" disabled>Clear completed</button>
+            </footer>
+        </section>
+    </main>
+
+    <!-- Undo message (shown after deleting) -->
+    <div class="toast" id="toast" role="status" hidden>
+        <span id="toast-text"></span>
+        <button type="button" class="text-btn" id="undo-btn">Undo</button>
+    </div>
+
+    <!-- One task row. script.js clones this for every task. -->
+    <template id="task-template">
+        <li class="task-item">
+            <input type="checkbox" class="task-check" aria-label="Mark task as done">
+            <span class="task-text"></span>
+            <div class="task-actions">
+                <button type="button" class="icon-btn edit-btn" aria-label="Edit task">
+                    <i class="fa-solid fa-pen icon-edit" aria-hidden="true"></i>
+                    <i class="fa-solid fa-check icon-save" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="icon-btn delete-btn" aria-label="Delete task">
+                    <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                </button>
+            </div>
+        </li>
+    </template>
+</body>
+
+</html>
